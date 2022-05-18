@@ -57,12 +57,10 @@ class LoginFragment : Fragment() {
     fun navigateUi() {
         viewModel.result().observe(viewLifecycleOwner){
             if(it==true){
-                Toast.makeText(requireContext(),"Login Sukses", Toast.LENGTH_LONG).show()
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
                 Log.d("login","berhasil $it")
                 viewModel.reset()
             } else {
-                Toast.makeText(requireContext(),"Login Failed",Toast.LENGTH_LONG).show()
                 Log.d("login","test $it")
             }
         }

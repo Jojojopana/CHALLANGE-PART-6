@@ -15,5 +15,8 @@ data class User(
     var userName: String,
 
     @ColumnInfo(name = "password")
-    var password: String?= null
+    var password: String?= null,
+
+//    @ColumnInfo(name=  "imagepath")
+//    var imagePath: String? = null
 ): Parcelable

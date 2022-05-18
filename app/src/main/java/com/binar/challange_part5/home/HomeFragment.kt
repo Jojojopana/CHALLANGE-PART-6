@@ -17,15 +17,13 @@ import com.binar.challange_part5.dao.userDB
 import com.binar.challange_part5.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-    //    private val viewModelRecommendation :   MovieRecommendationViewModel by activityViewModels()
-    //    private val viewModelUser :             UserViewModel by activityViewModels()
+
     lateinit var viewModelUser              : UserHomeViewModel
     val viewModelMovieRecommendation by viewModels<MovieViewModel>{
         HomeViewModelFactory((activity?.application as MyApplication).repository)
     }
     private var _binding: FragmentHomeBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
     private val binding get() = _binding!!
 
     override fun onCreateView(

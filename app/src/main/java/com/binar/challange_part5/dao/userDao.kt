@@ -19,6 +19,6 @@ interface userDao {
     fun login(userName: String?= null, password: String?= null): User
 
     @Query("SELECT * FROM User WHERE password = :password")
-    fun getAllData(password: String?): List<User>
+    fun getAllData(password: String?): User
 
 }

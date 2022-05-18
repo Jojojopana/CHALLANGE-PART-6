@@ -15,23 +15,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <ImageView
+        android:id="@+id/imageprofile"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="150dp"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <EditText
         android:id="@+id/profileusername"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="220dp"
         android:hint="Masukkan Username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/updateprofile"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="280dp"
         android:text="Update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/logoutprofile"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="340dp"
         android:text="Logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

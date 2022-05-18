@@ -29,7 +29,6 @@ class UserRepository(private val UserDao: userDao, private val context: Context)
         private const val DATASTORE_NAME = "application_preferences"
 
         private val USERNAME_KEY = stringPreferencesKey("username_key")
-        private val EMAIL_KEY = stringPreferencesKey("email_key")
 
         private val Context.prefDataStore by preferencesDataStore(
             name = DATASTORE_NAME
@@ -46,12 +45,13 @@ class UserRepository(private val UserDao: userDao, private val context: Context)
 
     suspend fun updateProfile(user: User, username: String): Int {
         return UserDao.updateData(
+            USERname = username,
             username = user.userName
         )
     }
 
-    suspend fun getAllData(password: String):List<User> {
-        return UserDao.getAllData(password)
+    suspend fun getAllData(username: String):User {
+        return UserDao.getAllData(username)
     }
 
     suspend fun setUsername(username: String){
