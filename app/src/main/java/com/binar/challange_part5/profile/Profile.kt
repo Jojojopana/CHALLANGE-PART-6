@@ -32,26 +32,19 @@ class Profile : Fragment() {
     private val REQUEST_CODE_PERMISSION = 100
     var imagePath :String?=null
     //KAMERA
-//    private val galleryResult =
-//        registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
-//            Log.d("HASILKAMERA",result.toString())
-//            imagePath = result.toString()
-////            binding.imageProfile.setImageURI(result)
-//            Glide.with(requireActivity())
-//                .load(result)
-//                .apply(RequestOptions.centerCropTransform())
-//                .error(R.drawable.ic_launcher_background)
-//                .into(binding.imageprofile)
-//        }
-
-
-
-
-
+    private val galleryResult =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+            Log.d("HASILKAMERA",result.toString())
+            imagePath = result.toString()
+            binding.imageprofile.setImageURI(result)
+            Glide.with(requireActivity())
+                .load(result)
+                .apply(RequestOptions.centerCropTransform())
+                .error(R.drawable.ic_launcher_background)
+                .into(binding.imageprofile)
+        }
 
     private var _binding: FragmentProfileBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     lateinit var viewModel : ProfileViewModel
     private var useernameValue = "default"
@@ -71,9 +64,9 @@ class Profile : Fragment() {
         username()
         setData()
 
-//        binding.imageprofile.setOnClickListener {
-//            checkingPermissions()
-//        }
+        binding.imageprofile.setOnClickListener {
+            checkingPermissions()
+        }
 
 
         binding.logoutprofile.setOnClickListener {
@@ -83,8 +76,9 @@ class Profile : Fragment() {
         binding.updateprofile.setOnClickListener {
             val user = User(
                 userName = binding.profileusername.text.toString(),
+                imagePath = imagePath
             )
-//            Log.d("GALERI",imagePath.toString())
+            Log.d("GALERI",imagePath.toString())
             viewModel.getUsername().observe(viewLifecycleOwner){
                 viewModel.updateData(user,it)
             }
@@ -93,7 +87,7 @@ class Profile : Fragment() {
                 if(it==true){
                     viewModel.setUsername(user.userName)
                     viewModel.getUserData(user.userName)
-                    Toast.makeText(requireContext(),"nickname Sudah Diganti",Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(),"Profile Sudah Diganti",Toast.LENGTH_LONG).show()
                     findNavController().navigate(ProfileDirections.actionProfileToHomeFragment())
                 }
             }
@@ -103,73 +97,69 @@ class Profile : Fragment() {
             logOut()
         }
     }
-//    private fun checkingPermissions() {
-//        if (isGranted(
-//                requireActivity(),
-//                Manifest.permission.CAMERA,
-//                arrayOf(
-////                    Manifest.permission.CAMERA,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE,
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                ),
-//                REQUEST_CODE_PERMISSION,
-//            )
-//        ) {
-//            chooseImageDialog()
-//        }
-//    }
-//    private fun isGranted(
-//        activity: Activity,
-//        permission: String,
-//        permissions: Array<String>,
-//        request: Int,
-//    ): Boolean {
-//        val permissionCheck = ActivityCompat.checkSelfPermission(activity, permission)
-//        return if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-//                showPermissionDeniedDialog()
-//            } else {
-//                ActivityCompat.requestPermissions(activity, permissions, request)
-//            }
-//            false
-//        } else {
-//            true
-//        }
-//    }
-//    private fun chooseImageDialog() {
-//        androidx.appcompat.app.AlertDialog.Builder(requireContext())
-//            .setMessage("Pilih Gambar")
-//            .setPositiveButton("Gallery") { _, _ -> openGallery() }
-////            .setNegativeButton("Camera") { _, _ -> openCamera() }
-//            .show()
-//    }
-//    private fun openGallery() {
-//        activity?.intent?.type = "image/*"
-//        galleryResult.launch("image/*")
-//    }
+    private fun checkingPermissions() {
+        if (isGranted(
+                requireActivity(),
+                Manifest.permission.CAMERA,
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
+                REQUEST_CODE_PERMISSION,
+            )
+        ) {
+            chooseImageDialog()
+        }
+    }
+    private fun isGranted(
+        activity: Activity,
+        permission: String,
+        permissions: Array<String>,
+        request: Int,
+    ): Boolean {
+        val permissionCheck = ActivityCompat.checkSelfPermission(activity, permission)
+        return if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                showPermissionDeniedDialog()
+            } else {
+                ActivityCompat.requestPermissions(activity, permissions, request)
+            }
+            false
+        } else {
+            true
+        }
+    }
+    private fun chooseImageDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setMessage("Pilih Gambar")
+            .setPositiveButton("Gallery") { _, _ -> openGallery() }
+            .show()
+    }
+    private fun openGallery() {
+        activity?.intent?.type = "image/*"
+        galleryResult.launch("image/*")
+    }
 
 
 
 
-//    private fun showPermissionDeniedDialog() {
-//        androidx.appcompat.app.AlertDialog.Builder(requireContext())
-//            .setTitle("Permission Denied")
-//            .setMessage("Permission is denied, Please allow permissions from App Settings.")
-//            .setPositiveButton(
-//                "App Settings"
-//            ) { _, _ ->
-//                val intent = Intent()
-//                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-//                val uri = Uri.fromParts("package", activity?.packageName, null)
-//                intent.data = uri
-//                startActivity(intent)
-//            }
-//            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-//            .show()
-//    }
-
-
-
+    private fun showPermissionDeniedDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Permission Denied")
+            .setMessage("Permission is denied, Please allow permissions from App Settings.")
+            .setPositiveButton(
+                "App Settings"
+            ) { _, _ ->
+                val intent = Intent()
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                val uri = Uri.fromParts("package", activity?.packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .show()
+    }
 
     private fun username(){
         viewModel.getUsername().observe(viewLifecycleOwner){result ->
@@ -183,15 +173,15 @@ class Profile : Fragment() {
             if(it.userName!==null){
                 binding.profileusername.setText(it.userName.toString())
             }
-//            if(it.imagePath!=null){
-//                Log.d("GGG",it.imagePath.toString())
-//                imagePath = it.imagePath
-//                Glide.with(requireActivity())
-//                    .load(it.imagePath)
-//                    .apply(RequestOptions.centerCropTransform())
-//                    .error(R.drawable.ic_launcher_background)
-//                    .into(binding.imageprofile)
-//            }
+            if(it.imagePath!=null){
+                Log.d("GGG",it.imagePath.toString())
+                imagePath = it.imagePath
+                Glide.with(requireActivity())
+                    .load(it.imagePath)
+                    .apply(RequestOptions.centerCropTransform())
+                    .error(R.drawable.ic_launcher_background)
+                    .into(binding.imageprofile)
+            }
         }
     }
     private fun logOut(){
@@ -208,8 +198,6 @@ class Profile : Fragment() {
             .setMessage("Apakah anda ingin Keluar?").setTitle("Confirm Logout")
             .create().show()
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

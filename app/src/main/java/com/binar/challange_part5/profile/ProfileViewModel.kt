@@ -29,7 +29,6 @@ class ProfileViewModel(private val repository: UserRepository): ViewModel() {
     fun resultUser():LiveData<User>{
         return user
     }
-
     fun getUsername():LiveData<String>{
         return repository.getUsernameValue().asLiveData()
     }
@@ -47,14 +46,17 @@ class ProfileViewModel(private val repository: UserRepository): ViewModel() {
 
     fun getUserData(username:String) {
         val usernameResult = StringBuffer()
+        val imageResult     = StringBuffer()
         viewModelScope.launch(Dispatchers.IO){
             val result = repository.getAllData(username = username)
             runBlocking(Dispatchers.Main) {
                 result?.let {
                     usernameResult.append(it.userName)
+                    imageResult.append(it.imagePath.toString())
                 }
                 val resultDataUser = User(
                     userName    = usernameResult.toString(),
+                    imagePath = imageResult.toString()
                 )
                 user.value = resultDataUser
             }

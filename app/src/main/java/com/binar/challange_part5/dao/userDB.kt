@@ -15,7 +15,7 @@ abstract class userDB: RoomDatabase() {
         fun getInstance(context: Context): userDB?{
             if(instance==null){
                 synchronized(User::class){
-                    instance = Room.databaseBuilder(context.applicationContext,userDB::class.java,"app.db").build()
+                    instance = Room.databaseBuilder(context.applicationContext,userDB::class.java,"app123.db").build()
                 }
         }
             return instance

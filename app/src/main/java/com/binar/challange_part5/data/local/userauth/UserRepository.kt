@@ -46,7 +46,8 @@ class UserRepository(private val UserDao: userDao, private val context: Context)
     suspend fun updateProfile(user: User, username: String): Int {
         return UserDao.updateData(
             USERname = username,
-            username = user.userName
+            username = user.userName,
+            imagepath = user.imagePath
         )
     }
 
