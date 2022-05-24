@@ -21,11 +21,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.binar.challange_part5.R
 import com.binar.challange_part5.User
-import com.binar.challange_part5.ViewModelFactory
 import com.binar.challange_part5.databinding.FragmentProfileBinding
 import com.binar.challange_part5.home.HomeFragmentDirections
+import com.binar.challange_part5.home.MovieViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class Profile : Fragment() {
@@ -46,7 +47,7 @@ class Profile : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    lateinit var viewModel : ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModel()
     private var useernameValue = "default"
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,8 +60,6 @@ class Profile : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(),factory)[ProfileViewModel::class.java]
         username()
         setData()
 

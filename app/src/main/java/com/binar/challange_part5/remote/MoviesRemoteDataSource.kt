@@ -2,36 +2,30 @@ package com.binar.challange_part5.remote
 
 import com.binar.challange_part5.data.model.GetAllMovieResponse
 import com.binar.challange_part5.data.model.MovieModel
-import com.binar.challange_part5.data.network.MovieApi
+import com.binar.challange_part5.data.network.MovieApiService
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MoviesRemoteDataSource {
+class MoviesRemoteDataSource(private val movieApiService: MovieApiService) {
+    @OptIn(DelicateCoroutinesApi::class)
     fun getMovie(movieCAllback: MovieCAllback):List<GetAllMovieResponse>{
-        MovieApi.instance.AllMovie().enqueue(object :
-            Callback<MovieModel> {
-            override fun onResponse(call: Call<MovieModel>, response: Response<MovieModel>) {
-                when {
-                    response.isSuccessful -> {
-                        response.body()?.results?.let {
-                            movieCAllback.onComplete(it)
-                        }
-                    }
-                    response.code() == 401 -> {
-                        movieCAllback.onError()
-                    }
-                    response.code()==404 ->{
-                        movieCAllback.onError()
-                    }
+        GlobalScope.launch(Dispatchers.IO){
+            val response = movieApiService.AllMovie()
+            runBlocking(Dispatchers.Main){
+                if (response.isSuccessful) {
+                    val result = response.body()
+//                    val code = response.code()
+                    result?.let {
+                        movieCAllback.onComplete(it.results) }
+                }else{
+                    movieCAllback.onError()
                 }
             }
-            override fun onFailure(call: Call<MovieModel>, t: Throwable) {
-                movieCAllback.onError()
-            }
-        })
-        return emptyList()
-    }
+        }
+    return emptyList()
+}
     interface MovieCAllback {
         fun onComplete(listResult : List<GetAllMovieResponse>)
         fun onError()

@@ -15,17 +15,7 @@ import kotlinx.coroutines.flow.map
 class UserRepository(private val UserDao: userDao, private val context: Context) {
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        private var instance: UserRepository? = null
-        fun getInstance(context: Context): UserRepository? {
-            return instance ?: synchronized(UserRepository::class.java){
-                if(instance == null){
-                    val database = userDB.getInstance(context)
-                    instance = UserRepository(database!!.UserDao(),context)
-                }
-                return instance
-            }
-        }
+
         private const val DATASTORE_NAME = "application_preferences"
 
         private val USERNAME_KEY = stringPreferencesKey("username_key")

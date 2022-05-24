@@ -7,15 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.binar.challange_part5.R
-import com.binar.challange_part5.ViewModelFactory
 import com.binar.challange_part5.databinding.FragmentSplashBinding
+import com.binar.challange_part5.home.MovieViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SplashFragment : Fragment() {
     private var _binding: FragmentSplashBinding?= null
     private val binding get() = _binding!!
-    lateinit var viewModel : SplashViewModel
+    private val viewModel: SplashViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,8 +27,6 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(), factory)[SplashViewModel::class.java]
 
         viewModel.loginCheck()
         navigate()

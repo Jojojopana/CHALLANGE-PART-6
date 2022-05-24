@@ -6,22 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.binar.challange_part5.MyApplication
-import com.binar.challange_part5.ViewModelFactory
 import com.binar.challange_part5.adapter.MovieAdapter
-import com.binar.challange_part5.dao.userDB
 import com.binar.challange_part5.databinding.FragmentHomeBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
-    lateinit var viewModelUser              : UserHomeViewModel
-    val viewModelMovieRecommendation by viewModels<MovieViewModel>{
-        HomeViewModelFactory((activity?.application as MyApplication).repository)
-    }
+    private val ViewModel: MovieViewModel by viewModel()
+
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
@@ -37,8 +31,6 @@ class HomeFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModelUser = ViewModelProvider(requireActivity(),factory)[UserHomeViewModel::class.java]
 
 
         catchUsername()
@@ -50,13 +42,13 @@ class HomeFragment : Fragment() {
         }
     }
     private fun catchUsername(){
-        viewModelUser.getUsername().observe(viewLifecycleOwner){
+        ViewModel.getUsername().observe(viewLifecycleOwner){
             binding.username.text = it.toString()
         }
     }
 
     private fun fetchMovie(){
-        viewModelMovieRecommendation.getMovieRecommendation().observe(viewLifecycleOwner){
+        ViewModel.getMovieRecommendation().observe(viewLifecycleOwner){
             Log.d("CEKOBSERV",it.toString())
             val adapter = MovieAdapter(it)
             val layoutManager =  LinearLayoutManager(requireContext(),

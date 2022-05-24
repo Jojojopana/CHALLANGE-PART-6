@@ -8,22 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.binar.challange_part5.R
-import com.binar.challange_part5.ViewModelFactory
 import com.binar.challange_part5.databinding.FragmentLoginBinding
-import com.binar.challange_part5.databinding.FragmentRegisterBinding
-import com.binar.challange_part5.register.RegisterFragmentDirections
+import com.binar.challange_part5.home.MovieViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +30,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(),factory)[LoginViewModel::class.java]
         binding.tombolLogin.setOnClickListener{
            val username = binding.usernameInput.text.toString()
             val password = binding.passwordInput.text.toString()

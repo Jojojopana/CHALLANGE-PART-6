@@ -10,15 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.binar.challange_part5.User
-import com.binar.challange_part5.ViewModelFactory
 import com.binar.challange_part5.dao.userDB
 import com.binar.challange_part5.databinding.FragmentRegisterBinding
+import com.binar.challange_part5.home.MovieViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.Executors
 
 class RegisterFragment : Fragment() {
     lateinit var binding: FragmentRegisterBinding
-    private var mDB: userDB?= null
-    private lateinit var viewModel: RegisterViewModel
+    private val viewModel: RegisterViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +32,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(),factory)[RegisterViewModel::class.java]
 
         binding.btnRegister.setOnClickListener{
             val confPassword = binding.usernameRegister.text.toString()
